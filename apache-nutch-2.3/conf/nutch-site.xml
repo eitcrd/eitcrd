@@ -1,0 +1,260 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<!-- Put site-specific property overrides in this file. -->
+
+<configuration>
+
+	<!-- -->
+	<property>
+		<name>plugin.folders</name>
+		<value>./src/plugin</value>
+	</property>
+
+	<property>
+		<name>plugin.includes</name>
+		<!-- momo -->
+		<value>protocol-s2jh|urlfilter-(regex|domain)|parse-(html|s2jh)|index-(basic|anchor)|indexer-solr</value>
+		<!-- yahoo
+		<value>protocol-httpclient|urlfilter-(regex|domain)|parse-(html|s2jh)|index-(basic|anchor)|indexer-solr</value>
+		 -->
+		<description>Regular expression naming plugin directory names to
+			include. Any plugin not matching this expression is
+			excluded.
+			In any
+			case you need at least include the nutch-extensionpoints plugin. By
+			default Nutch includes crawling
+			just HTML and plain text via HTTP,
+			and
+			basic indexing and search plugins. In order to use HTTPS please
+			enable
+			protocol-httpclient, but be aware of possible intermittent
+			problems with the
+			underlying commons-httpclient library.
+		</description>
+	</property>
+
+	<property>
+		<name>fetcher.parse</name>
+		<value>true</value>
+		<description>If true, fetcher will parse content. NOTE: previous
+			releases would
+			default to true. Since 2.0 this is set
+			to false as a
+			safer default.
+		</description>
+	</property>
+
+	<property>
+		<name>fetcher.threads.fetch</name>
+		<value>10</value>
+		<description>The number of FetcherThreads the fetcher should use.
+			This
+			is also determines the maximum number of requests that are
+			made at
+			once (each FetcherThread handles one connection). The total
+			number of
+			threads running in distributed mode will be the number of
+			fetcher
+			threads * number of nodes as fetcher has one map task per
+			node.
+		</description>
+	</property>
+
+	<property>
+		<name>fetcher.server.delay</name>
+		<value>5.0</value>
+		<description>The number of seconds the fetcher will delay between
+			successive requests to the same server. Note that this might get
+			overriden by a Crawl-Delay from a robots.txt and is used ONLY if
+			fetcher.threads.per.queue is set to 1.
+		</description>
+	</property>
+
+	<property>
+		<name>fetcher.verbose</name>
+		<value>true</value>
+		<description>If true, fetcher will log more verbosely.</description>
+	</property>
+
+	<property>
+		<name>partition.url.mode</name>
+		<value>byHost</value>
+		<description>Determines how to partition URLs. Default value is
+			'byHost', also takes 'byDomain' or 'byIP'.
+		</description>
+	</property>
+
+	<property>
+		<name>fetcher.max.crawl.delay</name>
+		<value>10</value>
+		<description>
+			If the Crawl-Delay in robots.txt is set to greater than this value (in
+			seconds) then the fetcher will skip this page, generating an error
+			report.
+			If set to -1 the fetcher will never skip such pages and will wait the
+			amount of time retrieved from robots.txt Crawl-Delay, however long
+			that
+			might be.
+		</description>
+	</property>
+
+	<property>
+		<name>generate.max.count</name>
+		<value>1000</value>
+		<description>The maximum number of urls in a single
+			fetchlist. -1 if
+			unlimited. The urls are counted according
+			to the value of the
+			parameter generator.count.mode.
+		</description>
+	</property>
+
+	<property>
+		<name>http.content.limit</name>
+		<value>-1</value>
+		<description>The length limit for downloaded content using the http
+			protocol, in bytes. If this value is nonnegative
+			(>=0), content longer
+			than it will be truncated; otherwise, no truncation at all. Do not
+			confuse this setting with the
+			file.content.limit setting.
+		</description>
+	</property>
+
+	<property>
+		<name>parser.timeout</name>
+		<value>-1</value>
+		<description>Debugging takes time, esp. when inspecting variables,
+			stack traces, etc. Usually too much time, so that
+			some timeout will
+			apply and stop the application. Set timeouts in the nutch-site.xml
+			used for debugging to a rather
+			high value (or -1 for unlimited), e.g.,
+			when debugging the parser.
+		</description>
+	</property>
+
+	<property>
+		<name>http.agent.name</name>
+		<value>Nutch-Spider</value>
+	</property>
+
+	<property>
+		<name>http.accept.language</name>
+		<value>zh-tw,zh-cn,zh;q=0.8,ja-jp,en-us,en-gb,en;q=0.7,*;q=0.3</value>
+		<description>Value of the “Accept-Language” request header field.
+			This
+			allows selecting non-English language as default
+			one to retrieve.
+			It is
+			a useful setting for search engines build for certain national group.
+		</description>
+	</property>
+
+	<property>
+		<name>parser.character.encoding.default</name>
+		<value>utf-8</value>
+		<description>The character encoding to fall back to when no other
+			information
+			is available
+		</description>
+	</property>
+
+	<property>
+		<name>storage.data.store.class</name>
+		<value>org.apache.gora.mongodb.store.MongoStore</value>
+		<description>Default class for storing data</description>
+	</property>
+
+	<property>
+		<name>db.max.outlinks.per.page</name>
+		<value>-1</value>
+		<description>The maximum number of outlinks that we'll process for a
+			page.
+			If this value is nonnegative (>=0), at most
+			db.max.outlinks.per.page
+			outlinks
+			will be processed for a page;
+			otherwise, all outlinks will be processed.
+		</description>
+	</property>
+
+	<property>
+		<name>urlfilter.order</name>
+		<value>org.apache.nutch.urlfilter.regex.RegexURLFilter</value>
+		<description>The order by which url filters are applied.
+			If empty, all
+			available url filters (as dictated by properties
+			plugin-includes and
+			plugin-excludes above) are loaded and applied in
+			system
+			defined order.
+			If not empty, only named filters are loaded and applied
+			in given
+			order. For example, if this property has value:
+			org.apache.nutch.urlfilter.regex.RegexURLFilter
+			org.apache.nutch.urlfilter.prefix.PrefixURLFilter
+			then RegexURLFilter
+			is applied first, and PrefixURLFilter second.
+			Since all filters are
+			AND'ed, filter ordering does not have impact
+			on end result, but it may
+			have performance implication, depending
+			on relative expensiveness of
+			filters.
+		</description>
+	</property>
+
+	<!-- BasicIndexingfilter plugin properties -->
+
+	<property>
+		<name>indexer.max.title.length</name>
+		<value>200</value>
+		<description>The maximum number of characters of a title that are
+			indexed. A value of -1 disables this check.
+			Used by index-basic.
+		</description>
+	</property>
+
+	<!-- Custom proerties -->
+	<property>
+		<name>parse.data.persist.mode</name>
+		<value>jdbc</value>
+		<description>
+			println: Just System.out.println
+			jdbc: Persist to Database
+			by JDBC
+			mongodb: Persist to MongoDB
+		</description>
+	</property>
+	<property>
+		<name>jdbc.driver</name>
+		<value>com.mysql.jdbc.Driver</value>
+	</property>
+	<property>
+		<name>jdbc.url</name>
+		<value>jdbc:mysql://172.16.1.171:3306/nutch</value>
+	</property>
+	<property>
+		<name>jdbc.username</name>
+		<value>root</value>
+	</property>
+	<property>
+		<name>jdbc.password</name>
+		<value>root</value>
+	</property>
+
+	<property>
+		<name>mongodb.host</name>
+		<value>127.0.0.1</value>
+	</property>
+	<property>
+		<name>mongodb.port</name>
+		<value>27017</value>
+	</property>
+	<property>
+		<name>mongodb.db</name>
+		<value>nutch</value>
+	</property>
+</configuration>
